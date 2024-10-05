@@ -14,4 +14,4 @@ exec google-chrome \
   --user-data-dir=/tmp/chrome-profile \
   --remote-debugging-port=21222 \
   --kiosk \
-  "file:///${pwd}/wait.html"
+  "file:///root/app/wait.html"

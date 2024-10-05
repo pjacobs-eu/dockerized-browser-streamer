@@ -1,6 +1,42 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <style>
+            .loader {
+                width: fit-content;
+                font-weight: bold;
+                font-family: monospace;
+                font-size: 30px;
+                background:linear-gradient(90deg,#000 50%,#0000 0) right/200% 100%;
+                animation: l21 2s infinite linear;
+            }
+
+            .loader::before {
+                content :"Lade ...";
+                color: #0000;
+                padding: 0 5px;
+                background: inherit;
+                background-image: linear-gradient(90deg,#fff 50%,#000 0);
+                -webkit-background-clip:text;
+                background-clip:text;
+            }
+
+            @keyframes l21{
+                100%{background-position: left}
+            }
+
+            .center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
     <body>
-        <h1>Wait a minute...</h1>
+        <div class="center">
+            <div class="loader"></div>
+        </div>
     </body>
 </html>

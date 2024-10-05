@@ -2,21 +2,6 @@
 
 set -xeo pipefail
 
-# Install additional CA certificates to shared PKI store for Chrome (e.g. for development)
-mkdir -p ~/ca/
-shopt -s nullglob
-
-if [ -n "$CA_CERT" ]; then
- echo "$CA_CERT" > ~/ca/"${CA_CERT_NAME:-'environment'}".crt
-fi
-
-mkdir -p $HOME/.pki/nssdb
-certutil -d $HOME/.pki/nssdb -N --empty-password
-for CAcert in ~/ca/*.crt; do
- filename=$(basename $CAcert)
- certutil -A -n "${filename%.*}" -t "TCu,Cuw,Tuw" -i ${CAcert} -d sql:$HOME/.pki/nssdb
-done
-
 # Create a new Chrome profile
 mkdir -p /tmp/chrome-profile
 
@@ -27,5 +12,6 @@ exec google-chrome \
   --disable-sync \
   --no-first-run \
   --user-data-dir=/tmp/chrome-profile \
+  --remote-debugging-port=21222 \
   --kiosk \
-  "${MEETING_URL}"
+  "file:///${pwd}/wait.html"

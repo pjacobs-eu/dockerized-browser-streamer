@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -xeo pipefail
 
 export SCREEN_WIDTH=${RECORDING_SCREEN_WIDTH:-'1920'}
@@ -15,7 +14,7 @@ dbus-uuidgen > /var/lib/dbus/machine-id
 dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address
 SHELL
 
-# 1. Run X11 virtual framebuffer – a virtual display – so Firefox will have somewhere to draw
+# 1. Run X11 virtual framebuffer – a virtual display – so Browser will have somewhere to draw
 SCREEN_RESOLUTION=${SCREEN_WIDTH}x${SCREEN_HEIGHT}
 COLOR_DEPTH=24
 X_SERVER_NUM=1
@@ -24,15 +23,18 @@ Xvfb :${X_SERVER_NUM} -ac -screen 0 ${SCREEN_RESOLUTION}x${COLOR_DEPTH} 2>&1 &
 export DISPLAY=:${X_SERVER_NUM}.0
 sleep 0.5  # Ensure this has started before moving on
 
-# 2. Start PulseAudio server so Firefox will have somewhere to send audio
+# 2. Start PulseAudio server so Browser will have somewhere to send audio
 pulseaudio --fail -D --exit-idle-time=-1
 pacmd load-module module-virtual-sink sink_name=v1  # Load a virtual sink as `v1`
 pacmd set-default-sink v1  # Set the `v1` as the default sink device
 pacmd set-default-source v1.monitor  # Set the monitor of the v1 sink to be the default source
 
 ./chrome.sh &
-sleep 0.5  # Wait a bit for firefox to start before moving on
+sleep 0.5  # Wait a bit for Browser to start before moving on
 xdotool mousemove 1 1 click 1  # Move mouse out of the way so it doesn't trigger the "pause" overlay on the video tile
+
+# Start streaming using streamkick
+#./streamkick/puppeteer/play.sh --type $STREAMING_SERVICE --url $PLAY_URL &
 
 if [ -n "$RTMP_URL" ]; then
   # 4. FFmpeg to stream into some mediaserver like Wowza
@@ -42,7 +44,7 @@ fi
 # 5. VNC for debug (you need to publish port in docker to access it)
 x11vnc -display $DISPLAY -forever -nopw -noserverdpms -quiet -xkb &
 
-# Wait for all components: xvfb, pulseaudio, firefox, and ffmpeg, fail if either of them exits with non-zero exit code.
+# Wait for all components: xvfb, pulseaudio, chrome, and ffmpeg, fail if either of them exits with non-zero exit code.
 wait -n
 
 # Terminate other processes

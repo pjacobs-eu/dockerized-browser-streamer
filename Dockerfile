@@ -4,8 +4,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN groupadd --gid 1001 user \
-  && useradd --uid 1001 --gid user --shell /bin/bash --create-home user
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
 
 RUN /usr/bin/apt-get update && \
 	/usr/bin/apt-get upgrade -y && \
@@ -25,9 +24,11 @@ RUN /usr/bin/apt-get update && \
   xfonts-scalable \
   fonts-liberation \
   fonts-ipafont-gothic \
-  fonts-wqy-zenhei
+  fonts-wqy-zenhei \
+  nodejs \
+  npm
 
-RUN echo 'user ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN sudo npm install -g puppeteer
 
 # Install chrome
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb && \
@@ -37,9 +38,7 @@ RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_am
 # For debugging with VNC
 EXPOSE 5900
 
-USER user
-
-WORKDIR /home/user/app
+WORKDIR /root/app
 
 COPY . .
 

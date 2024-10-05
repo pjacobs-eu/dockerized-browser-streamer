@@ -26,8 +26,7 @@ RUN /usr/bin/apt-get update && \
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
 RUN apt-get install -y \
-  nodejs \
-  npm
+  nodejs
 
 RUN sudo npm install -g puppeteer
 

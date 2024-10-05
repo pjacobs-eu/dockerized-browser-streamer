@@ -47,9 +47,9 @@ CMD=(
          # -af "aresample=async=1:min_hard_comp=0.100000:first_pts=0"
      # adjust fragmentation to prevent seeking(resolve issue: muxer does not support non seekable output)
      -movflags frag_keyframe+empty_moov
-     # set output format to RTSP
-     -f mp4
-     /home/user/data/test.mp4
+     # set output format to flv
+     -f flv
+     "${RTMP_URL}"
 )
 
 exec "${CMD[@]}"

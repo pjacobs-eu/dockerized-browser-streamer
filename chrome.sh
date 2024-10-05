@@ -27,5 +27,5 @@ exec google-chrome \
   --disable-sync \
   --no-first-run \
   --user-data-dir=/tmp/chrome-profile \
+  --kiosk \
   "${MEETING_URL}"
-  #--kiosk \

@@ -4,8 +4,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
-
 RUN /usr/bin/apt-get update && \
 	/usr/bin/apt-get upgrade -y && \
 	/usr/bin/apt-get install -y \
@@ -24,7 +22,10 @@ RUN /usr/bin/apt-get update && \
   xfonts-scalable \
   fonts-liberation \
   fonts-ipafont-gothic \
-  fonts-wqy-zenhei \
+  fonts-wqy-zenhei
+
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - 
+RUN apt-get install -y \
   nodejs \
   npm
 

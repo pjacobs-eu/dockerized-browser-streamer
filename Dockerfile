@@ -4,8 +4,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN groupadd --gid 1000 user \
-  && useradd --uid 1000 --gid user --shell /bin/bash --create-home user
+RUN groupadd --gid 1001 user \
+  && useradd --uid 1001 --gid user --shell /bin/bash --create-home user
 
 RUN /usr/bin/apt-get update && \
 	/usr/bin/apt-get upgrade -y && \

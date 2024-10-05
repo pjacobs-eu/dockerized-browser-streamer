@@ -49,7 +49,7 @@ CMD=(
      -movflags frag_keyframe+empty_moov
      # set output format to RTSP
      -f mp4
-     ./test.mp4
+     /home/user/app/test.mp4
 )
 
 exec "${CMD[@]}"
